@@ -10,8 +10,9 @@ from .config import settings
 class Database:
     def __init__(self) -> None:
         self._client: MongoClient | None = None
-def connect(self) -> None:
-    if self._client is None:
+    
+    def connect(self) -> None:
+     if self._client is None:
         self._client = MongoClient(
             settings.mongodb_uri,
             serverSelectionTimeoutMS=3000,
