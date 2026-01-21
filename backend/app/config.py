@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     environment: str = "dev"
 
     mongodb_uri: str = "mongodb+srv://zoomoutmotion_db_user:saitama%40222@cluster0.q9j8e4w.mongodb.net/?retryWrites=true&w=majority"
-"
     mongodb_db: str = "scu"
 
     jwt_secret: str = "saitama@222"
@@ -29,4 +28,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
