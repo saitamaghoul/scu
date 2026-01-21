@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     app_name: str = "Student Collaboration Hub API"
     environment: str = "dev"
 
-    mongodb_uri: str = "mongodb+srv://zoomoutmotion_db_user:saitama%40222@cluster0.q9j8e4w.mongodb.net/?retryWrites=true&w=majority"
+    mongodb_uri: str = "mmongodb+srv://zoomoutmotion_db_user:saitama222@cluster0.q9j8e4w.mongodb.net/?appName=Cluster0"
     mongodb_db: str = "scu"
 
     jwt_secret: str = "saitama@222"
