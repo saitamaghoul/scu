@@ -1,6 +1,6 @@
-import certifi
-from __future__ import annotations
 
+from __future__ import annotations
+import certifi
 from pymongo import MongoClient
 from pymongo.collection import Collection
 
