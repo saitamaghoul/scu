@@ -9,10 +9,11 @@ class Settings(BaseSettings):
     app_name: str = "Student Collaboration Hub API"
     environment: str = "dev"
 
-    mongodb_uri: str = "mongodb://localhost:27017"
+    mongodb_uri: str = "mongodb+srv://zoomoutmotion_db_user:saitama%40222@cluster0.q9j8e4w.mongodb.net/?retryWrites=true&w=majority"
+"
     mongodb_db: str = "scu"
 
-    jwt_secret: str = "change-me-super-secret"
+    jwt_secret: str = "saitama@222"
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
 
