@@ -1,5 +1,5 @@
-
 from __future__ import annotations
+
 import certifi
 from pymongo import MongoClient
 from pymongo.collection import Collection
@@ -10,15 +10,18 @@ from .config import settings
 class Database:
     def __init__(self) -> None:
         self._client: MongoClient | None = None
-    
+
     def connect(self) -> None:
-     if self._client is None:
-        self._client = MongoClient(
-            settings.mongodb_uri,
-            serverSelectionTimeoutMS=3000,
-            connectTimeoutMS=3000,
-            tlsCAFile=certifi.where()  # <-- fixes SSL handshake
-        )
+        if self._client is None:
+            self._client = MongoClient(
+                settings.mongodb_uri,
+                tls=True,
+                tlsCAFile=certifi.where(),
+                serverSelectionTimeoutMS=5000,
+                connectTimeoutMS=5000,
+            )
+            # force connection check
+            self._client.admin.command("ping")
 
     def close(self) -> None:
         if self._client is not None:
@@ -53,4 +56,3 @@ class Database:
 
 
 db = Database()
-
