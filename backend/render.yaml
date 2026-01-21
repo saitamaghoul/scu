@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: scu-backend
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # Minimal required:
+      - key: MONGODB_URI
+        value: mongodb+srv://USER:PASSWORD@CLUSTER/scu?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: change-me-super-secret
+      # Optional (defaults are OK):
+      - key: MONGODB_DB
+        value: scu
+      # Set this to your Netlify URL after you deploy frontend
+      - key: CORS_ORIGINS
+        value: https://YOUR-SITE.netlify.app
+

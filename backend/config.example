@@ -1,0 +1,15 @@
+APP_NAME=Student Collaboration Hub API
+ENVIRONMENT=dev
+
+# Change this in production
+JWT_SECRET=change-me-super-secret
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=10080
+
+# Mongo
+MONGODB_URI=mongodb://localhost:27017
+MONGODB_DB=scu
+
+# CORS (comma-separated)
+CORS_ORIGINS=http://127.0.0.1:5173,http://localhost:5173
+
