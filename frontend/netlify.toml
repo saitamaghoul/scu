@@ -6,5 +6,5 @@
 # If you really want "no dashboard env vars", edit this file once and commit it.
 # Replace the placeholder with your Render backend URL.
 [build.environment]
-  VITE_API_BASE_URL = "https://YOUR-RENDER-BACKEND.onrender.com"
+  VITE_API_BASE_URL = "https://scu-y0nk.onrender.com"
 
