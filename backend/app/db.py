@@ -13,6 +13,10 @@ class Database:
 
     def connect(self) -> None:
         if self._client is None:
+            if not settings.mongodb_uri or not settings.mongodb_uri.strip():
+                raise RuntimeError(
+                    "MONGODB_URI is not set. Set env var MONGODB_URI to your MongoDB connection string."
+                )
             self._client = MongoClient(
                 settings.mongodb_uri,
                 tls=True,

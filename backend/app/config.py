@@ -4,15 +4,19 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=None, extra="ignore")
+    # Allow a local `.env` file for development while prioritizing environment
+    # variables in production (Render / Netlify builds provide env vars).
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     app_name: str = "Student Collaboration Hub API"
     environment: str = "dev"
 
-    mongodb_uri: str = "mmongodb+srv://zoomoutmotion_db_user:saitama222@cluster0.q9j8e4w.mongodb.net/?appName=Cluster0"
+    # Intentionally empty by default so deployments must provide `MONGODB_URI`.
+    mongodb_uri: str = ""
     mongodb_db: str = "scu"
 
-    jwt_secret: str = "saitama@222"
+    # Secrets should be provided via env var `JWT_SECRET` in production.
+    jwt_secret: str = ""
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
 
