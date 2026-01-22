@@ -17,15 +17,31 @@ class Database:
                 raise RuntimeError(
                     "MONGODB_URI is not set. Set env var MONGODB_URI to your MongoDB connection string."
                 )
+
+            # Let the URI control TLS settings (for mongodb+srv URIs the driver
+            # enables TLS automatically). Passing `tls`/`tlsCAFile` explicitly
+            # can sometimes cause handshake issues in some hosting environments.
             self._client = MongoClient(
                 settings.mongodb_uri,
-                tls=True,
-                tlsCAFile=certifi.where(),
                 serverSelectionTimeoutMS=5000,
                 connectTimeoutMS=5000,
             )
-            # force connection check
-            self._client.admin.command("ping")
+
+            # force connection check and provide a clearer error if it fails
+            try:
+                self._client.admin.command("ping")
+            except Exception as exc:  # pylint: disable=broad-except
+                # Clean up client to avoid leaking sockets
+                try:
+                    self._client.close()
+                finally:
+                    self._client = None
+                raise RuntimeError(
+                    "Failed connecting to MongoDB. Check MONGODB_URI value, "
+                    "MongoDB Atlas network access (IP whitelist), and that the URI "
+                    "uses the correct `mongodb+srv://` form if appropriate. "
+                    f"Original error: {exc}"
+                ) from exc
 
     def close(self) -> None:
         if self._client is not None:
