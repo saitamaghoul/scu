@@ -13,16 +13,34 @@ class Database:
 
     def connect(self) -> None:
         if self._client is None:
-            if not settings.mongodb_uri or not settings.mongodb_uri.strip():
+            if not settings.mongodb_uri:
                 raise RuntimeError(
                     "MONGODB_URI is not set. Set env var MONGODB_URI to your MongoDB connection string."
+                )
+
+            # Strip surrounding whitespace/newlines that may have been injected
+            # into environment variables (e.g. trailing newlines from CI or
+            # accidental copy/paste). A stray newline in the URI can produce
+            # malformed options like `w=majority\n` which break the driver.
+            uri_raw = settings.mongodb_uri
+            # Remove CR/LF characters and common URL-encoded newline sequences
+            uri = (
+                uri_raw.replace("\n", "")
+                .replace("\r", "")
+                .replace("%0A", "")
+                .replace("%0a", "")
+                .strip()
+            )
+            if not uri:
+                raise RuntimeError(
+                    "MONGODB_URI is empty after stripping whitespace. Check the env var."
                 )
 
             # Let the URI control TLS settings (for mongodb+srv URIs the driver
             # enables TLS automatically). Passing `tls`/`tlsCAFile` explicitly
             # can sometimes cause handshake issues in some hosting environments.
             self._client = MongoClient(
-                settings.mongodb_uri,
+                uri,
                 serverSelectionTimeoutMS=5000,
                 connectTimeoutMS=5000,
             )
@@ -56,7 +74,9 @@ class Database:
 
     @property
     def db(self):
-        return self.client[settings.mongodb_db]
+        # Ensure DB name has no surrounding whitespace
+        dbname = settings.mongodb_db.strip() if settings.mongodb_db else "scu"
+        return self.client[dbname]
 
     @property
     def users(self) -> Collection:
