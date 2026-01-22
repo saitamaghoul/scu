@@ -21,8 +21,9 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
 
     # Comma-separated list.
-    # Use "*" to allow any origin (simpler, but don't use with cookies).
-    cors_origins: str = "http://127.0.0.1:5173,http://localhost:5173"
+    # Use "*" to allow any origin (simpler for public demo). Change to a
+    # restricted list (your Netlify URL) for production.
+    cors_origins: str = "*"
 
     @property
     def cors_origins_list(self) -> list[str]:
