@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  (import.meta as any).env?.VITE_API_BASE_URL?.toString?.() || "http://127.0.0.1:8000";
+  (import.meta as any).env?.VITE_API_BASE_URL?.toString?.() || "https://scu-y0nk.onrender.com";
 
 async function request<T>(
   path: string,
